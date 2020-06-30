@@ -1,19 +1,21 @@
-import React from 'react'
-import { TouchableHighlight, View, Text, StyleSheet } from 'react-native'
+import React, { useState } from "react";
+import {
+  TouchableHighlight,
+  View,
+  Text,
+  StyleSheet,
+  Button,
+} from "react-native";
 
-import { connect } from 'react-redux'
-import { fetchData } from './actions'
+import { connect } from "react-redux";
+import { fetchData } from "./actions";
 
-let styles
+let styles;
 
-const App = (props) => {
-  const {
-    container,
-    text,
-    button,
-    buttonText,
-    mainContent
-  } = styles
+function App(props) {
+  const { container, text, button, buttonText, mainContent } = styles;
+
+  // const [count, setCount] = useState(0);
 
   return (
     <View style={container}>
@@ -22,59 +24,56 @@ const App = (props) => {
         <Text style={buttonText}>Load Data</Text>
       </TouchableHighlight>
       <View style={mainContent}>
-      {
-        props.appData.isFetching && <Text>Loading</Text>
-      }
-      {
-        props.appData.data.length ? (
-          props.appData.data.map((person, i) => {
-            return <View key={i} >
-              <Text>Name: {person.name}</Text>
-              <Text>Age: {person.age}</Text>
-            </View>
-          })
-        ) : null
-      }
+        {props.appData.isFetching && <Text>Loading</Text>}
+        {props.appData.data.length
+          ? props.appData.data.map((results, i) => {
+              return (
+                <View key={i}>
+                  <Text>Name: {results.original_title}</Text>
+                  <Text>Age: {results.release_date}</Text>
+                </View>
+              );
+            })
+          : null}
       </View>
+      {/* <Button style={button} onPress={() => setCount(count + 1)} />
+      <Text> You click {count} times</Text> */}
     </View>
-  )
+  );
 }
 
 styles = StyleSheet.create({
   container: {
-    marginTop: 100
+    marginTop: 100,
   },
   text: {
-    textAlign: 'center'
+    textAlign: "center",
   },
   button: {
     height: 60,
     margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#0b7eff'
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#0b7eff",
   },
   buttonText: {
-    color: 'white'
+    color: "white",
   },
   mainContent: {
     margin: 10,
-  }
-})
+  },
+});
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    appData: state.appData
-  }
+    appData: state.appData,
+  };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    fetchData: () => dispatch(fetchData())
-  }
+    fetchData: () => dispatch(fetchData()),
+  };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App);
